@@ -9,8 +9,11 @@ import { JSX, SVGProps } from "react"
 import { useEffect, useState } from 'react';
 import Papa from 'papaparse';
 
+
 export function ShokujinDashboardMenuItemCell() {
   const [menuItems, setMenuItems] = useState([]);
+  const [searchTerm] = useState("");
+  const [filteredMenuItems, setFilteredMenuItems] = useState([]);
 
   useEffect(() => {
     Papa.parse('https://raw.githubusercontent.com/doridoridoriand/shokujinjp-data/master/fixed.csv', {
@@ -21,7 +24,14 @@ export function ShokujinDashboardMenuItemCell() {
       }
     });
   }, []);
-  
+
+  useEffect(() => {
+    setFilteredMenuItems(
+      filteredMenuItems.filter((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()),
+      )
+    );
+  }, [searchTerm, menuItems]);
 
   return (
     <TableBody>
@@ -49,6 +59,7 @@ export function ShokujinDashboardMenuItemCell() {
 
 
 export function ShokujinDashboard() {
+  const [searchTerm, setSearchTerm] = useState("");
   return (
     <div className="grid min-h-screen w-full lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
@@ -87,13 +98,15 @@ export function ShokujinDashboard() {
           </Link>
           <div className="w-full flex-1">
             <form>
-              <div className="relative">
-                <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
-                <Input
-                  className="w-full bg-white shadow-none appearance-none pl-8 md:w-2/3 lg:w-1/3 dark:bg-gray-950"
-                  placeholder="Search menu items..."
-                  type="search"
-                />
+            <div className="relative">
+              <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
+              <Input
+                className="w-full bg-white shadow-none appearance-none pl-8 md:w-2/3 lg:w-1/3 dark:bg-gray-950"
+                placeholder="Search menu items..."
+                type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
               </div>
             </form>
           </div>
@@ -113,7 +126,7 @@ export function ShokujinDashboard() {
                   <TableHead className="hidden md:table-cell">Description</TableHead>
                 </TableRow>
               </TableHeader>
-              <ShokujinDashboardMenuItemCell />
+              <ShokujinDashboardMenuItemCell searchTerm={searchTerm} />
             </Table>
           </div>
         </main>
