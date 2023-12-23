@@ -21,6 +21,7 @@ export function ShokujinDashboardMenuItemCell() {
       }
     });
   }, []);
+  
 
   return (
     <TableBody>
@@ -31,7 +32,7 @@ export function ShokujinDashboardMenuItemCell() {
               alt="Menu item image"
               className="aspect-square rounded-md object-cover"
               height="64"
-              src={item.image}
+              src="./placeholder.svg"
               width="64"
             />
           </TableCell>
