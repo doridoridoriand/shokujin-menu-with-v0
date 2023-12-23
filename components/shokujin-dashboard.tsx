@@ -5,6 +5,7 @@
 import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
+import { JSX, SVGProps } from "react"
 
 export function ShokujinDashboard() {
   return (
@@ -127,7 +128,7 @@ export function ShokujinDashboard() {
 }
 
 
-function PlaneIcon(props) {
+function PlaneIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -147,7 +148,7 @@ function PlaneIcon(props) {
 }
 
 
-function HomeIcon(props) {
+function HomeIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -168,7 +169,7 @@ function HomeIcon(props) {
 }
 
 
-function MenuIcon(props) {
+function MenuIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -190,7 +191,7 @@ function MenuIcon(props) {
 }
 
 
-function SearchIcon(props) {
+function SearchIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

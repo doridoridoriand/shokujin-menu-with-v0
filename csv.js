@@ -1,10 +1,11 @@
 const csv = require('csv-parser');
-const fs = require('fs');
+const https = require('https');
 const results = [];
 
-fs.createReadStream('https://raw.githubusercontent.com/doridoridoriand/shokujinjp-data/master/fixed.csv')
-  .pipe(csv())
-  .on('data', (data) => results.push(data))
-  .on('end', () => {
-    console.log(results);
-  });
+https.get('https://raw.githubusercontent.com/doridoridoriand/shokujinjp-data/master/fixed.csv', (response) => {
+  response.pipe(csv())
+    .on('data', (data) => results.push(data))
+    .on('end', () => {
+      console.log(results);
+    });
+});
