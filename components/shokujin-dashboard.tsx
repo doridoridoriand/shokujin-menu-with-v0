@@ -6,6 +6,46 @@ import Link from "next/link"
 import { Input } from "@/components/ui/input"
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
 import { JSX, SVGProps } from "react"
+import { useEffect, useState } from 'react';
+import Papa from 'papaparse';
+
+export function ShokujinDashboardMenuItemCell() {
+  const [menuItems, setMenuItems] = useState([]);
+
+  useEffect(() => {
+    Papa.parse('https://raw.githubusercontent.com/doridoridoriand/shokujinjp-data/master/fixed.csv', {
+      download: true,
+      header: true,
+      complete: function(results) {
+        setMenuItems(results.data);
+      }
+    });
+  }, []);
+
+  return (
+    <TableBody>
+      {menuItems.map((item, index) => (
+        <TableRow key={index}>
+          <TableCell>
+            <img
+              alt="Menu item image"
+              className="aspect-square rounded-md object-cover"
+              height="64"
+              src={item.image}
+              width="64"
+            />
+          </TableCell>
+          <TableCell className="font-medium">{item.name}</TableCell>
+          <TableCell>{item.price}</TableCell>
+          <TableCell className="hidden md:table-cell">{item.category}</TableCell>
+          <TableCell className="hidden md:table-cell">{item.description}</TableCell>
+
+        </TableRow>
+      ))}
+    </TableBody>
+  );
+}
+
 
 export function ShokujinDashboard() {
   return (
@@ -67,58 +107,12 @@ export function ShokujinDashboard() {
                 <TableRow>
                   <TableHead className="w-[80px]">Image</TableHead>
                   <TableHead className="max-w-[150px]">Name</TableHead>
-                  <TableHead className="hidden md:table-cell">Type</TableHead>
-                  <TableHead className="hidden md:table-cell">Category</TableHead>
                   <TableHead>Price</TableHead>
+                  <TableHead className="hidden md:table-cell">Category</TableHead>
+                  <TableHead className="hidden md:table-cell">Description</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
-                <TableRow>
-                  <TableCell>
-                    <img
-                      alt="Menu item image"
-                      className="aspect-square rounded-md object-cover"
-                      height="64"
-                      src="/placeholder.svg"
-                      width="64"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">Spaghetti Bolognese</TableCell>
-                  <TableCell className="hidden md:table-cell">Main Course</TableCell>
-                  <TableCell className="hidden md:table-cell">Italian</TableCell>
-                  <TableCell>$20</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <img
-                      alt="Menu item image"
-                      className="aspect-square rounded-md object-cover"
-                      height="64"
-                      src="/placeholder.svg"
-                      width="64"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">Chicken Caesar Salad</TableCell>
-                  <TableCell className="hidden md:table-cell">Starter</TableCell>
-                  <TableCell className="hidden md:table-cell">American</TableCell>
-                  <TableCell>$10</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>
-                    <img
-                      alt="Menu item image"
-                      className="aspect-square rounded-md object-cover"
-                      height="64"
-                      src="/placeholder.svg"
-                      width="64"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">Cheeseburger</TableCell>
-                  <TableCell className="hidden md:table-cell">Main Course</TableCell>
-                  <TableCell className="hidden md:table-cell">American</TableCell>
-                  <TableCell>$15</TableCell>
-                </TableRow>
-              </TableBody>
+              <ShokujinDashboardMenuItemCell />
             </Table>
           </div>
         </main>
